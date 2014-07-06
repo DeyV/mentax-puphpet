@@ -161,6 +161,7 @@ php:
         display_errors: On
         session.save_path: /var/lib/php/session
         error_reporting: E_ALL
+        max_execution_time: 300
         max_input_vars: 2000
     timezone: Europe/Warsaw
 xdebug:
