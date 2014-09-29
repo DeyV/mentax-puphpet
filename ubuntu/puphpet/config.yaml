@@ -122,25 +122,29 @@ apache:
             ssl_key: ''
             ssl_chain: ''
             ssl_certs_dir: ''
-    mod_pagespeed: 0
-    mod_spdy: 0
-nginx:
-    install: 0
-    vhosts:
-        csk719oLpQJs:
-            server_name: awesome.dev
-            server_aliases:
-                - www.awesome.dev
-            www_root: /var/www/awesome.dev
-            listen_port: '80'
-            index_files:
-                - index.html
-                - index.htm
-                - index.php
-            envvars:
+
+        A8Kk32lHjGZ7:
+            servername: mentax.dev
+            serveraliases:
+                - mentax.dev
+            docroot: /var/www/mentax
+            port: '8680'
+            setenv:
                 - 'APP_ENV dev'
+                - 'COMPUTERNAME mentax-dev'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+    mod_pagespeed: 0
+    mod_spdy: 0
 php:
     install: '1'
     version: '55'
