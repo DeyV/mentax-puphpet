@@ -36,7 +36,7 @@ vagrantfile-local:
                     - '--parser future'
         synced_folder:
             pQqQCbGw4FNo:
-                source: 'F:/'
+                source: 'F:/mentax'
                 target: /var/www
                 sync_type: default
                 mount_options:
