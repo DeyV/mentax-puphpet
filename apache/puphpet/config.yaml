@@ -110,6 +110,25 @@ vagrantfile:
                     auto: 'true'
                 owner: www-data
                 group: www-data
+            vflsf_qwertyasdfg:
+                source: 'f:/default'
+                target: /var/www/default
+                sync_type: default
+                smb:
+                    smb_host: ''
+                    smb_username: ''
+                    smb_password: ''
+                rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
+                        - .git/
+                    auto: 'true'
+                owner: www-data
+                group: www-data
         usable_port_range:
             start: 10200
             stop: 10500
@@ -134,6 +153,7 @@ server:
         - php5-pgsql
         - php5-sqlite
         - golang
+        - docker
 users_groups:
     install: '1'
     groups: {  }
@@ -274,6 +294,8 @@ php:
         php:
             - cli
             - intl
+            - curl
+            - mcrypt
         pear: {  }
         pecl: {  }
     ini:
