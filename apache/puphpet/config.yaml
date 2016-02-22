@@ -161,10 +161,10 @@ users_groups:
 locale:
     install: '1'
     settings:
-        default_locale: pl_PL.UTF-8
+        default_locale: pl_PL.UTF8
         locales:
-            - en_GB.UTF-8
-            - en_US.UTF-8
+            - en_GB.UTF8
+            - en_US.UTF8
 firewall:
     install: '1'
     rules: {  }
