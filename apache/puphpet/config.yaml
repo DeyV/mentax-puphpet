@@ -38,10 +38,6 @@ vagrantfile:
                 source: 'f:/mentax'
                 target: /var/www/mentax
                 sync_type: default
-                smb:
-                    smb_host: ''
-                    smb_username: ''
-                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -53,14 +49,26 @@ vagrantfile:
                     auto: 'true'
                 owner: www-data
                 group: www-data
+
+            vflsf_ys6z65d086z1:
+              source: 'f:/produkcja/ansible'
+              target: /var/www/ansible
+              sync_type: default
+              rsync:
+                  args:
+                      - '--verbose'
+                      - '--archive'
+                      - '-z'
+                  exclude:
+                      - .vagrant/
+                  auto: 'true'
+              owner: www-data
+              group: www-data
+
             vflsf_7h5n6u995nbb:
                 source: 'f:/mentax.old'
                 target: /var/www/mentax.old
                 sync_type: default
-                smb:
-                    smb_host: ''
-                    smb_username: ''
-                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -76,10 +84,6 @@ vagrantfile:
                 source: 'f:/mentax.pl'
                 target: /var/www/mentax.pl
                 sync_type: default
-                smb:
-                    smb_host: ''
-                    smb_username: ''
-                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -95,10 +99,6 @@ vagrantfile:
                 source: 'f:/mentax.eu'
                 target: /var/www/mentax.eu
                 sync_type: default
-                smb:
-                    smb_host: ''
-                    smb_username: ''
-                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -114,10 +114,6 @@ vagrantfile:
                 source: 'f:/default'
                 target: /var/www/default
                 sync_type: default
-                smb:
-                    smb_host: ''
-                    smb_username: ''
-                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -171,70 +167,7 @@ firewall:
 cron:
     install: '1'
     jobs: {  }
-nginx:
-    install: '0'
-    settings:
-        default_vhost: 1
-        proxy_buffer_size: 128k
-        proxy_buffers: '4 256k'
-        proxy_connect_timeout: 600s
-        proxy_send_timeout: 600s
-        proxy_read_timeout: 600s
-        names_hash_bucket_size: 128
-    upstreams: {  }
-    vhosts:
-        nxv_1e42hhota5u7:
-            server_name: awesome.dev
-            server_aliases:
-                - www.awesome.dev
-            www_root: /var/www/awesome
-            listen_port: '80'
-            index_files:
-                - index.html
-                - index.htm
-                - index.php
-            client_max_body_size: 1m
-            ssl: '0'
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_port: '443'
-            ssl_protocols: ''
-            ssl_ciphers: ''
-            rewrite_to_https: '1'
-            spdy: '1'
-            locations:
-                nxvl_6bexjtkn3xwj:
-                    location: /
-                    autoindex: 'off'
-                    internal: 'false'
-                    try_files:
-                        - $uri
-                        - $uri/
-                        - /index.php$is_args$args
-                    fastcgi: ''
-                    fastcgi_index: ''
-                    fastcgi_split_path: ''
-                    proxy: ''
-                    proxy_redirect: ''
-                nxvl_fdg7dugksmlj:
-                    location: '~ \.php$'
-                    autoindex: 'off'
-                    internal: 'false'
-                    try_files:
-                        - $uri
-                        - $uri/
-                        - /index.php$is_args$args
-                    fastcgi: '127.0.0.1:9000'
-                    fastcgi_index: index.php
-                    fastcgi_split_path: '^(.+\.php)(/.*)$'
-                    fast_cgi_params_extra:
-                        - 'SCRIPT_FILENAME $request_filename'
-                        - 'APP_ENV dev'
-                    set:
-                        - '$path_info $fastcgi_path_info'
-                    proxy: ''
-                    proxy_redirect: ''
-    proxies: {  }
+
 apache:
     install: '1'
     settings:
@@ -377,48 +310,6 @@ hhvm:
         display_errors: 'On'
         error_reporting: '-1'
         date.timezone: UTC
-mariadb:
-    install: '0'
-    settings:
-        version: '10.1'
-        root_password: '123'
-        override_options: {  }
-    adminer: 0
-    users:
-        mariadbnu_s8lz8m3tlezq:
-            name: dbuser
-            password: '123'
-    databases:
-        mariadbnd_llmodbfs4evw:
-            name: dbname
-            sql: ''
-    grants:
-        mariadbng_hjjhlsb5oby2:
-            user: dbuser
-            table: '*.*'
-            privileges:
-                - ALL
-mysql:
-    install: '0'
-    settings:
-        version: '5.5'
-        root_password: '123'
-        override_options: {  }
-    adminer: 0
-    users:
-        mysqlnu_sl33yzfto7ra:
-            name: dbuser
-            password: '123'
-    databases:
-        mysqlnd_g23tu1acdin8:
-            name: dbname
-            sql: ''
-    grants:
-        mysqlng_g2ehiwndujw0:
-            user: dbuser
-            table: '*.*'
-            privileges:
-                - ALL
 postgresql:
     install: '0'
     settings:
