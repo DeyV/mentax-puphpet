@@ -159,6 +159,7 @@ locale:
     settings:
         default_locale: pl_PL.UTF8
         locales:
+            - pl_PL.UTF8
             - en_GB.UTF8
             - en_US.UTF8
 firewall:
@@ -359,7 +360,7 @@ beanstalkd:
         binlogsize: '10485760'
     beanstalk_console: 0
 rabbitmq:
-    install: '1'
+    install: '0'
     settings:
         port: '5672'
     users: {  }
