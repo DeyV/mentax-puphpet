@@ -10,11 +10,15 @@ Zalecam zainstalowanie dodatku plikunącego aktualność vbguest
     vagrant plugin install vagrant-vbguest
 
 
-Wymagana korekta pliku
+Następnie nalezy skopiować plik
 
-    puphpet/config.yaml
+    puphpet/config-custom.yaml.dist
 
-w celu ustawienia swoich ścieze ktore będą mapowane do wirtualki.
+jako
+
+    puphpet/config-custom.yaml  
+
+i poprawnie ustawic swoje ściezki ktore będą mapowane do wirtualki.
 
 
 
