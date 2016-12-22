@@ -83,9 +83,16 @@ server:
     packages:
         - mc
         - git
+        - zip
         - php5.6-pgsql
         - php5.6-mysql
         - php5-sqlite
+        - php5.6-xml
+        - php5.6-soap
+        - php5.6-curl
+        - php5.6-mcrypt
+        - php5.6-bcmath
+        - php5.6-zip
         - golang
         - docker
 users_groups:
@@ -159,6 +166,46 @@ apache:
                             custom_fragment: ''
                             provider: filesmatch
                     provider: directory
+
+        av_67xy30x7jyt2:
+            servername: mentax.dev
+            serveraliases:
+                - www.mentax.dev
+            docroot: /var/www/
+            port: '8080'
+            setenv:
+                - 'APP_ENV dev'
+                - 'COMPUTERNAME mentax-dev'
+            setenvif:
+                - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
+            custom_fragment: ''
+            ssl: '0'
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+            ssl_protocol: ''
+            ssl_cipher: ''
+            directories:
+                avd_lvg6yzofwsw2:
+                    path: /var/www/
+                    options:
+                        - Indexes
+                        - FollowSymlinks
+                        - MultiViews
+                    allow_override:
+                        - All
+                    require:
+                        - 'all granted'
+                    custom_fragment: ''
+                    files_match:
+                        avdfm_c0kfvqjkd502:
+                            path: \.php$
+                            sethandler: 'proxy:fcgi://127.0.0.1:9000'
+                            custom_fragment: ''
+                            provider: filesmatch
+                    provider: directory
+
 php:
     install: '1'
     settings:
@@ -170,6 +217,7 @@ php:
             - curl
             - mcrypt
             - mbstring
+            - xml
         pear: {  }
         pecl: {  }
     ini:
@@ -231,6 +279,9 @@ hhvm:
         display_errors: 'On'
         error_reporting: '-1'
         date.timezone: UTC
+        max_input_vars: 2000
+        memory_limit: 256
+
 mariadb:
     install: '0'
     settings:
