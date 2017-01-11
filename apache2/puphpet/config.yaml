@@ -84,6 +84,7 @@ server:
         - mc
         - git
         - zip
+        - ruby
         - php5.6-pgsql
         - php5.6-mysql
         - php5-sqlite
