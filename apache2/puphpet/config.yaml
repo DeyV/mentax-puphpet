@@ -15,11 +15,11 @@ vagrantfile:
                     vmware:
                         numvcpus: 1
                     parallels:
-                        use_linked_clone: 0
+                        linked_clone: 0
                         check_guest_tools: 0
                         update_guest_tools: 0
                 machines:
-                    vflm_ztw1v2oe5xwu:
+                    vflm_6rrl92b47491:
                         id: mentax.dev
                         hostname: mentax.dev
                         network:
@@ -29,12 +29,14 @@ vagrantfile:
         provision:
             puppet:
                 manifests_path: puphpet/puppet/manifests
-                module_path: puphpet/puppet/modules
+                module_path:
+                    - puphpet/puppet/modules
+                    - puphpet/puppet/manifests
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
         synced_folder:
-            vflsf_2sy90o0ppps8:
+            vflsf_x42n5djcf2eg:
                 source: 'f:/default'
                 target: /var/www/default
                 sync_type: default
@@ -85,15 +87,17 @@ server:
         - git
         - zip
         - ruby
-        - php5.6-pgsql
-        - php5.6-mysql
-        - php5-sqlite
-        - php5.6-xml
-        - php5.6-soap
-        - php5.6-curl
-        - php5.6-mcrypt
-        - php5.6-bcmath
-        - php5.6-zip
+        - php7.1-common
+        - php7.1-pgsql
+        - php7.1-mysql
+        - php7.1-sqlite
+        - php7.1-xml
+        - php7.1-soap
+        - php7.1-curl
+        - php7.1-mcrypt
+        - php7.1-bcmath
+        - php7.1-zip
+        - php7.1-mbstring
         - golang
         - docker
 users_groups:
@@ -105,8 +109,8 @@ locale:
     settings:
         default_locale: pl_PL.UTF-8
         locales:
-            - pl_PL.UTF-8
             - en_US.UTF-8
+            - pl_PL.UTF-8
         timezone: Europe/Warsaw
 firewall:
     install: '1'
@@ -114,7 +118,111 @@ firewall:
 cron:
     install: '1'
     jobs: {  }
-
+nginx:
+    install: '0'
+    settings:
+        version: present
+        default_vhost: 1
+        proxy_buffers: '4 256k'
+        proxy_buffer_size: 128k
+        proxy_connect_timeout: 600s
+        proxy_send_timeout: 600s
+        proxy_read_timeout: 600s
+        names_hash_bucket_size: 128
+    upstreams: {  }
+    vhosts:
+        nxv_rq30lf7i2rpj:
+            server_name: awesome.dev
+            server_aliases:
+                - www.awesome.dev
+            www_root: /var/www/awesome
+            listen_port: '80'
+            client_max_body_size: 1m
+            ssl: '0'
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_port: '443'
+            ssl_protocols: ''
+            ssl_ciphers: ''
+            rewrite_to_https: '1'
+            spdy: '1'
+            locations:
+                nxvl_8rm8admbno7s:
+                    www_root: /var/www/awesome/web
+                    location: /
+                    index_files:
+                        - index.php
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /index.php$is_args$args
+                        - /app.php$is_args$args
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: index.php
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+                    set:
+                        - '$path_info $fastcgi_path_info'
+                    proxy: ''
+                    proxy_redirect: ''
+                nxvl_7fptlsa9bwqo:
+                    www_root: /var/www/awesome/web
+                    location: '~ ^/(app_dev|config)\.php(/|$)'
+                    index_files:
+                        - app_dev.php
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /app_dev.php$is_args$args
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: app_dev.php
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+                        - 'APP_ENV dev'
+                    set:
+                        - '$path_info $fastcgi_path_info'
+                    proxy: ''
+                    proxy_redirect: ''
+                nxvl_ad2n54lp9buu:
+                    www_root: /var/www/awesome/web
+                    location: '~ ^/app\.php(/|$)'
+                    index_files:
+                        - app.php
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /app.php$is_args$args
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: app.php
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+                        - 'APP_ENV prod'
+                    set:
+                        - '$path_info $fastcgi_path_info'
+                    proxy: ''
+                    proxy_redirect: ''
+                nxvl_ylej1wdo09th:
+                    www_root: /var/www/awesome/web
+                    location: '~ ^/index\.php(/|$)'
+                    index_files:
+                        - index.php
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /index.php$is_args$args
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: index.php
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+                    set:
+                        - '$path_info $fastcgi_path_info'
+                    proxy: ''
+                    proxy_redirect: ''
+    proxies: {  }
 apache:
     install: '1'
     settings:
@@ -129,15 +237,12 @@ apache:
         - proxy_fcgi
         - rewrite
     vhosts:
-        av_67xy30x7jytg:
+        av_ypxpk8090hig:
             servername: mentax.dev
             serveraliases:
                 - www.mentax.dev
             docroot: /var/www/
             port: '80'
-            setenv:
-                - 'APP_ENV dev'
-                - 'COMPUTERNAME mentax-dev'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             custom_fragment: ''
@@ -149,8 +254,9 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_lvg6yzofwsww:
+                avd_ha1rrtykf2aa:
                     path: /var/www/
+                    directoryindex: ''
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -160,23 +266,13 @@ apache:
                     require:
                         - 'all granted'
                     custom_fragment: ''
-                    files_match:
-                        avdfm_c0kfvqjkd50z:
-                            path: \.php$
-                            sethandler: 'proxy:fcgi://127.0.0.1:9000'
-                            custom_fragment: ''
-                            provider: filesmatch
                     provider: directory
-
-        av_67xy30x7jyt2:
+        av_7keffj8znt62:
             servername: mentax.dev
             serveraliases:
                 - www.mentax.dev
             docroot: /var/www/
-            port: '8080'
-            setenv:
-                - 'APP_ENV dev'
-                - 'COMPUTERNAME mentax-dev'
+            port: '80'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             custom_fragment: ''
@@ -188,8 +284,9 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_lvg6yzofwsw2:
+                avd_p434jsjyue8a:
                     path: /var/www/
+                    directoryindex: ''
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -199,26 +296,32 @@ apache:
                     require:
                         - 'all granted'
                     custom_fragment: ''
-                    files_match:
-                        avdfm_c0kfvqjkd502:
-                            path: \.php$
-                            sethandler: 'proxy:fcgi://127.0.0.1:9000'
-                            custom_fragment: ''
-                            provider: filesmatch
                     provider: directory
-
+letsencrypt:
+    install: '1'
+    settings:
+        email: ''
+    domains: {  }
 php:
     install: '1'
     settings:
-        version: '56'
+        version: '7.1'
     modules:
         php:
+            - common
             - cli
             - intl
             - curl
             - mcrypt
+            - gd
             - mbstring
             - xml
+            - pgsql
+            - mysql
+            - sqlite
+            - soap
+            - bcmath
+            - zip
         pear: {  }
         pecl: {  }
     ini:
@@ -229,7 +332,7 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_6e6o79jn9yin:
+        phpfp_ajk4fsn1jvf4:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -247,15 +350,35 @@ xdebug:
         xdebug.remote_enable: '1'
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
+blackfire:
+    install: '0'
+    settings:
+        server_id: ''
+        server_token: ''
+        agent:
+            http_proxy: ''
+            https_proxy: ''
+            log_file: stderr
+            log_level: '1'
+        php:
+            agent_timeout: '0.25'
+            log_file: ''
+            log_level: '1'
 xhprof:
     install: '0'
+wpcli:
+    install: '0'
+    version: v0.24.1
+drush:
+    install: '0'
+    version: 8.0.5
 ruby:
     install: '1'
     versions:
-        rv_9knzj42ltdc0:
+        rv_yr03sjxm337z:
             default: '1'
             bundler: '1'
-            version: 1.9.3
+            version: 2.3.1
 python:
     install: '1'
     packages: {  }
@@ -263,11 +386,10 @@ python:
 nodejs:
     install: '1'
     settings:
-        version: '5'
+        version: '6'
     npm_packages: {  }
 hhvm:
     install: '0'
-    nightly: 0
     composer: '1'
     composer_home: ''
     settings: {  }
@@ -280,30 +402,59 @@ hhvm:
         display_errors: 'On'
         error_reporting: '-1'
         date.timezone: UTC
-        max_input_vars: 2000
-        memory_limit: 256
-
+        max_input_vars: '2000'
+        memory_limit: '256'
 mariadb:
     install: '0'
     settings:
         version: '10.1'
         root_password: '123'
         override_options: {  }
-    adminer: 0
     users:
-        mariadbnu_p99qj5lp4jp7:
+        mariadbnu_60pyhoebdnoy:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_xmn81o86snww:
+        mariadbnd_2y93elorqwn4:
             name: dbname
             sql: ''
     grants:
-        mariadbng_j48a33knvg02:
+        mariadbng_j7h7z6qh7uo6:
             user: dbuser
             table: '*.*'
             privileges:
                 - ALL
+mysql:
+    install: '0'
+    settings:
+        version: '5.7'
+        root_password: '123'
+        override_options: {  }
+    users:
+        mysqlnu_kfawo1744ew0:
+            name: dbuser
+            password: '123'
+    databases:
+        mysqlnd_tmzx07vd0yrp:
+            name: dbname
+            sql: ''
+    grants:
+        mysqlng_4jzw5490sfc6:
+            user: dbuser
+            table: '*.*'
+            privileges:
+                - ALL
+postgresql:
+    install: '0'
+    settings:
+        global:
+            encoding: UTF8
+            version: '9.6'
+        server:
+            postgres_password: '123'
+    databases: {  }
+    users: {  }
+    grants: {  }
 mongodb:
     install: '0'
     settings:
@@ -318,8 +469,15 @@ redis:
         port: '6379'
 sqlite:
     install: '1'
-    adminer: 0
     databases: {  }
+mailhog:
+    install: '0'
+    settings:
+        smtp_ip: 0.0.0.0
+        smtp_port: 1025
+        http_ip: 0.0.0.0
+        http_port: '8025'
+        path: /usr/local/bin/mailhog
 beanstalkd:
     install: '0'
     settings:
@@ -344,3 +502,9 @@ elastic_search:
         version: 2.1.0
         java_install: true
     instances: {  }
+solr:
+    install: '0'
+    settings:
+        version: 5.5.2
+        port: '8984'
+
