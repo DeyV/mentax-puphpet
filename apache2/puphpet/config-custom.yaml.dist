@@ -4,8 +4,8 @@ vagrantfile:
             local:
                 machines:
                     vflm_ztw1v2oe5xwu:
-                        id: mentax.dev
-                        hostname: mentax.dev
+                        id: mentax.developer
+                        hostname: mentax.developer
                         network:
                             private_network: 192.168.56.101
                         memory: '512'

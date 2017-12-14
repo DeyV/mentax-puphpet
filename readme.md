@@ -21,6 +21,14 @@ jako
 i poprawnie ustawic swoje ściezki ktore będą mapowane do wirtualki.
 
 
+Dodaj nazwy hostów z pliku config do 
+  %SystemRoot%\system32\drivers\etc\hosts
+
+W tej chwili domyślne to: 
+ -  192.168.56.101 mentax.developer
+ 
+Można dodać też inne.
+
 
 Potem
 

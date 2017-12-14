@@ -20,8 +20,8 @@ vagrantfile:
                         update_guest_tools: 0
                 machines:
                     vflm_0mjw1kiyggyw:
-                        id: mentax.dev
-                        hostname: mentax.dev
+                        id: mentax.developer
+                        hostname: mentax.developer
                         network:
                             private_network: 192.168.56.101
                             forwarded_port:
@@ -125,9 +125,9 @@ nginx:
     upstreams: {  }
     vhosts:
         nxv_k2pc7yx2ksev:
-            server_name: awesome.dev
+            server_name: awesome.developer
             server_aliases:
-                - www.awesome.dev
+                - www.awesome.developer
             www_root: /var/www/awesome
             listen_port: '80'
             client_max_body_size: 1m
@@ -231,9 +231,9 @@ apache:
         - rewrite
     vhosts:
         av_m1y3it3aka1v:
-            servername: mentax.dev
+            servername: mentax.developer
             serveraliases:
-                - www.mentax.dev
+                - www.mentax.developer
             docroot: /var/www/
             port: '80'
             setenvif:
@@ -249,7 +249,7 @@ apache:
             directories:
                 avd_3nvfkwhx4sbi:
                     path: /var/www/
-                    directoryindex: 'index.php app.dev'
+                    directoryindex: 'index.php app.developer'
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -304,6 +304,7 @@ php:
             - sqlite
             - soap
             - bcmath
+            - redis
             - zip
         pear: {  }
         pecl: {  }
@@ -333,6 +334,8 @@ xdebug:
         xdebug.remote_enable: '1'
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
+        xdebug.profiler_enable: '1'
+        xdebug.profiler_enable_trigger: '1'
 blackfire:
     install: '0'
     settings:
