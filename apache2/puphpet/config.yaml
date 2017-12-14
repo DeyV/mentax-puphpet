@@ -19,13 +19,13 @@ vagrantfile:
                         check_guest_tools: 0
                         update_guest_tools: 0
                 machines:
-                    vflm_0mjw1kiyggyw:
+                    vflm_mtw08kjsr1ku:
                         id: mentax.developer
                         hostname: mentax.developer
                         network:
                             private_network: 192.168.56.101
                             forwarded_port:
-                                vflmnfp_04a0k0xms6ho:
+                                vflmnfp_2grcll0qujlj:
                                     host: '8080'
                                     guest: '22'
                         memory: '512'
@@ -40,7 +40,9 @@ vagrantfile:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
         synced_folder:
-            vflsf_nmp3p1ovj48k:
+            vflsf_q2axj8oyxixy:
+                owner: www-data
+                group: www-data
                 source: 'f:/default'
                 target: /var/www/default
                 sync_type: default
@@ -60,8 +62,6 @@ vagrantfile:
                         - .vagrant/
                         - .git/
                     auto: 'true'
-                owner: www-data
-                group: www-data
         usable_port_range:
             start: 10200
             stop: 10500
@@ -109,6 +109,13 @@ locale:
 firewall:
     install: '1'
     rules: {  }
+resolv:
+    install: '1'
+    nameservers:
+        - 8.8.8.8
+        - 8.8.4.4
+    domainname: ''
+    searchpath: {  }
 cron:
     install: '1'
     jobs: {  }
@@ -125,7 +132,7 @@ nginx:
         names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_k2pc7yx2ksev:
+        nxv_quw7pgscwam2:
             server_name: awesome.developer
             server_aliases:
                 - www.awesome.developer
@@ -133,17 +140,12 @@ nginx:
             listen_port: '80'
             client_max_body_size: 1m
             ssl: '0'
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_port: '443'
-            ssl_protocols: ''
-            ssl_ciphers: ''
-            rewrite_to_https: '1'
-            spdy: '1'
             locations:
-                nxvl_eb1200z0uhob:
+                nxvl_3ed0xf30yf12:
                     www_root: /var/www/awesome/web
                     location: /
+                    autoindex: 'off'
+                    internal: 'false'
                     index_files:
                         - index.php
                     try_files:
@@ -160,9 +162,11 @@ nginx:
                         - '$path_info $fastcgi_path_info'
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_g6ssyu7atbho:
+                nxvl_0p2dpuu1p2b8:
                     www_root: /var/www/awesome/web
                     location: '~ ^/(app_dev|config)\.php(/|$)'
+                    autoindex: 'off'
+                    internal: 'false'
                     index_files:
                         - app_dev.php
                     try_files:
@@ -179,9 +183,11 @@ nginx:
                         - '$path_info $fastcgi_path_info'
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_0kyvjkjlrw04:
+                nxvl_sw4y1cm0h3bx:
                     www_root: /var/www/awesome/web
                     location: '~ ^/app\.php(/|$)'
+                    autoindex: 'off'
+                    internal: 'false'
                     index_files:
                         - app.php
                     try_files:
@@ -198,9 +204,11 @@ nginx:
                         - '$path_info $fastcgi_path_info'
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_cobgx8veldxq:
+                nxvl_fqauh74rz9ks:
                     www_root: /var/www/awesome/web
                     location: '~ ^/index\.php(/|$)'
+                    autoindex: 'off'
+                    internal: 'false'
                     index_files:
                         - index.php
                     try_files:
@@ -231,7 +239,7 @@ apache:
         - proxy_fcgi
         - rewrite
     vhosts:
-        av_m1y3it3aka1v:
+        av_7ig5wv6ryc5l:
             servername: mentax.developer
             serveraliases:
                 - www.mentax.developer
@@ -241,16 +249,16 @@ apache:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
             custom_fragment: ''
             ssl: '0'
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_chain: ''
-            ssl_certs_dir: ''
+            ssl_cert: LETSENCRYPT
+            ssl_key: LETSENCRYPT
+            ssl_chain: LETSENCRYPT
+            ssl_certs_dir: LETSENCRYPT
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_3nvfkwhx4sbi:
+                avd_fhmn13uz1kfy:
                     path: /var/www/
-                    directoryindex: 'index.php app.developer'
+                    directoryindex: 'index.php app.php'
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -262,21 +270,21 @@ apache:
                     custom_fragment: ''
                     provider: directory
             files_match:
-                avfm_uyj2t6t2bg1a:
+                avfm_lcck4netqb9f:
                     path: (app_dev|config)\.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
                     setenv:
                         - 'APP_ENV dev'
                     custom_fragment: ''
                     provider: filesmatch
-                avfm_9tvabkrhfg8z:
+                avfm_kpn3nykxmjzz:
                     path: app\.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
                     setenv:
                         - 'APP_ENV prod'
                     custom_fragment: ''
                     provider: filesmatch
-                avfm_acymzf0oe2o6:
+                avfm_5whdc11pbm3a:
                     path: \.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
                     custom_fragment: ''
@@ -285,6 +293,7 @@ letsencrypt:
     install: '1'
     settings:
         email: ''
+        webserver_service: ''
     domains: {  }
 php:
     install: '1'
@@ -317,7 +326,7 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_ys0zj9wp6hre:
+        phpfp_t9o23492rvlu:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -362,7 +371,7 @@ drush:
 ruby:
     install: '1'
     versions:
-        rv_9b8d507sstpb:
+        rv_ir48mdn0j2gq:
             default: '1'
             bundler: '1'
             version: 2.3.1
@@ -379,22 +388,6 @@ nodejs:
     settings:
         version: '6'
     npm_packages: {  }
-hhvm:
-    install: '0'
-    composer: '1'
-    composer_home: ''
-    settings: {  }
-    server_ini:
-        hhvm.server.host: 127.0.0.1
-        hhvm.server.port: '9000'
-        hhvm.log.use_log_file: '1'
-        hhvm.log.file: /var/log/hhvm/error.log
-    php_ini:
-        display_errors: 'On'
-        error_reporting: '-1'
-        date.timezone: UTC
-        max_input_vars: '2000'
-        memory_limit: '256'
 mariadb:
     install: '0'
     settings:
@@ -402,15 +395,15 @@ mariadb:
         root_password: '123'
         override_options: {  }
     users:
-        mariadbnu_7v9txjofib7z:
+        mariadbnu_lw854dz6ials:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_141dxhnpu935:
+        mariadbnd_i2z8ddegmr7u:
             name: dbname
             sql: ''
     grants:
-        mariadbng_9os9bgj40ctj:
+        mariadbng_6jf2yktehoyz:
             user: dbuser
             table: '*.*'
             privileges:
@@ -422,15 +415,15 @@ mysql:
         root_password: '123'
         override_options: {  }
     users:
-        mysqlnu_abexx28g4tlv:
+        mysqlnu_9hiq1nj95dpo:
             name: dbuser
             password: '123'
     databases:
-        mysqlnd_qsvhqsnnf83r:
+        mysqlnd_79ktd0q2ykv7:
             name: dbname
             sql: ''
     grants:
-        mysqlng_kwdm4lwckxuk:
+        mysqlng_4zpyrhvh2ys7:
             user: dbuser
             table: '*.*'
             privileges:
@@ -455,7 +448,7 @@ mongodb:
         version: 2.6.0
     databases: {  }
 redis:
-    install: '1'
+    install: '0'
     settings:
         port: '6379'
 sqlite:
@@ -481,7 +474,7 @@ beanstalkd:
         binlogsize: '10485760'
     beanstalk_console: 0
 rabbitmq:
-    install: '1'
+    install: '0'
     settings:
         port: '5672'
     users: {  }
@@ -493,10 +486,11 @@ elastic_search:
         version: 2.3.1
         java_install: true
     instances:
-        esi_kz51xntqzww0:
+        esi_9qmpxex5gkfr:
             name: es-01
 solr:
     install: '0'
     settings:
         version: 5.5.2
         port: '8984'
+
