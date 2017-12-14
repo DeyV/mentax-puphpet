@@ -93,6 +93,7 @@ server:
         - docker
         - vim
         - htop
+        - wkhtmltopdf
 users_groups:
     install: '1'
     groups: {  }
@@ -499,4 +500,3 @@ solr:
     settings:
         version: 5.5.2
         port: '8984'
-
