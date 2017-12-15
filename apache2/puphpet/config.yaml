@@ -94,6 +94,12 @@ server:
         - vim
         - htop
         - wkhtmltopdf
+        - imagemagick
+        - pdftk
+        - libtiff-tools
+        - tesseract-ocr
+        - convertall
+        - convert-pgn
 users_groups:
     install: '1'
     groups: {  }
@@ -112,8 +118,7 @@ firewall:
 resolv:
     install: '1'
     nameservers:
-        - 8.8.8.8
-        - 8.8.4.4
+        - 192.168.90.215
     domainname: ''
     searchpath: {  }
 cron:
@@ -315,7 +320,7 @@ php:
             - soap
             - bcmath
             - redis
-            - zip
+            - zip 
         pear: {  }
         pecl: {  }
     ini:
@@ -323,6 +328,7 @@ php:
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
         date.timezone: UTC
+        max_input_vars: '2000'
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
@@ -493,4 +499,3 @@ solr:
     settings:
         version: 5.5.2
         port: '8984'
-
