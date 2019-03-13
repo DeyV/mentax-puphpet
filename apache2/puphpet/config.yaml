@@ -4,7 +4,7 @@ vagrantfile:
         provider:
             local:
                 box: bento/ubuntu-16.04
-                box_url: 'false'
+                box_url: bento/ubuntu1604-x64
                 box_version: '0'
                 chosen_virtualizer: virtualbox
                 virtualizers:
@@ -43,8 +43,8 @@ vagrantfile:
             folder1:
                 owner: vagrant
                 group: vagrant
-                source: ./
-                target: /var/www
+                source: 'f:/default'
+                target: /var/www/default
                 sync_type: default
                 smb:
                     smb_host: ''
