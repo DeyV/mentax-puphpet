@@ -451,4 +451,3 @@ elastic_search:
             jvm_options:
                 - '-Xms2G'
                 - '-Xmx2G'
-
