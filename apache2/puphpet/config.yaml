@@ -3,8 +3,8 @@ vagrantfile:
     vm:
         provider:
             local:
-                box: puphpet/ubuntu1604-x64
-                box_url: puphpet/ubuntu1604-x64
+                box: bento/ubuntu-16.04
+                box_url: 'false'
                 box_version: '0'
                 chosen_virtualizer: virtualbox
                 virtualizers:
@@ -19,13 +19,13 @@ vagrantfile:
                         check_guest_tools: 0
                         update_guest_tools: 0
                 machines:
-                    vflm_mtw08kjsr1ku:
+                    machine1:
                         id: mentax.developer
                         hostname: mentax.developer
                         network:
                             private_network: 192.168.56.101
                             forwarded_port:
-                                vflmnfp_2grcll0qujlj:
+                                port1:
                                     host: '8080'
                                     guest: '22'
                         memory: '512'
@@ -38,13 +38,13 @@ vagrantfile:
                     - puphpet/puppet/manifests
                 options:
                     - '--verbose'
-                    - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
+                    - '--hiera_config /opt/puphpet/puppet/hiera.yaml'
         synced_folder:
-            vflsf_q2axj8oyxixy:
-                owner: www-data
-                group: www-data
-                source: 'f:/default'
-                target: /var/www/default
+            folder1:
+                owner: vagrant
+                group: vagrant
+                source: ./
+                target: /var/www
                 sync_type: default
                 smb:
                     smb_host: ''
@@ -87,12 +87,12 @@ vagrantfile:
 server:
     install: '1'
     packages:
+        - bash-completion
+        - htop
+        - vim
         - mc
         - git
         - zip
-        - docker
-        - vim
-        - htop
         - wkhtmltopdf
         - imagemagick
         - pdftk
@@ -118,6 +118,7 @@ firewall:
 resolv:
     install: '1'
     nameservers:
+        - 8.8.8.8
         - 192.168.90.215
     domainname: ''
     searchpath: {  }
@@ -137,81 +138,30 @@ nginx:
         names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_quw7pgscwam2:
-            server_name: awesome.developer
+        vhost1:
+            server_name: awesome.test
             server_aliases:
-                - www.awesome.developer
+                - www.awesome.test
             www_root: /var/www/awesome
             listen_port: '80'
             client_max_body_size: 1m
             ssl: '0'
             locations:
-                nxvl_3ed0xf30yf12:
-                    www_root: /var/www/awesome/web
+                php_html:
+                    www_root: /var/www/awesome
                     location: /
                     autoindex: 'off'
                     internal: 'false'
                     index_files:
+                        - index.html
                         - index.php
                     try_files:
                         - $uri
                         - $uri/
                         - /index.php$is_args$args
-                        - /app.php$is_args$args
-                    fastcgi: '127.0.0.1:9000'
-                    fastcgi_index: index.php
-                    fastcgi_split_path: '^(.+\.php)(/.*)$'
-                    fast_cgi_params_extra:
-                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
-                    set:
-                        - '$path_info $fastcgi_path_info'
-                    proxy: ''
-                    proxy_redirect: ''
-                nxvl_0p2dpuu1p2b8:
-                    www_root: /var/www/awesome/web
-                    location: '~ ^/(app_dev|config)\.php(/|$)'
-                    autoindex: 'off'
-                    internal: 'false'
-                    index_files:
-                        - app_dev.php
-                    try_files:
-                        - $uri
-                        - $uri/
-                        - /app_dev.php$is_args$args
-                    fastcgi: '127.0.0.1:9000'
-                    fastcgi_index: app_dev.php
-                    fastcgi_split_path: '^(.+\.php)(/.*)$'
-                    fast_cgi_params_extra:
-                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
-                        - 'APP_ENV dev'
-                    set:
-                        - '$path_info $fastcgi_path_info'
-                    proxy: ''
-                    proxy_redirect: ''
-                nxvl_sw4y1cm0h3bx:
-                    www_root: /var/www/awesome/web
-                    location: '~ ^/app\.php(/|$)'
-                    autoindex: 'off'
-                    internal: 'false'
-                    index_files:
-                        - app.php
-                    try_files:
-                        - $uri
-                        - $uri/
-                        - /app.php$is_args$args
-                    fastcgi: '127.0.0.1:9000'
-                    fastcgi_index: app.php
-                    fastcgi_split_path: '^(.+\.php)(/.*)$'
-                    fast_cgi_params_extra:
-                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
-                        - 'APP_ENV prod'
-                    set:
-                        - '$path_info $fastcgi_path_info'
-                    proxy: ''
-                    proxy_redirect: ''
-                nxvl_fqauh74rz9ks:
-                    www_root: /var/www/awesome/web
-                    location: '~ ^/index\.php(/|$)'
+                php_php:
+                    www_root: /var/www/awesome
+                    location: '~ \.php$'
                     autoindex: 'off'
                     internal: 'false'
                     index_files:
@@ -219,16 +169,13 @@ nginx:
                     try_files:
                         - $uri
                         - $uri/
-                        - /index.php$is_args$args
-                    fastcgi: '127.0.0.1:9000'
-                    fastcgi_index: index.php
-                    fastcgi_split_path: '^(.+\.php)(/.*)$'
-                    fast_cgi_params_extra:
-                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
                     set:
                         - '$path_info $fastcgi_path_info'
-                    proxy: ''
-                    proxy_redirect: ''
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: index.php
+                    fastcgi_split_path: '^(.+?\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
     proxies: {  }
 apache:
     install: '1'
@@ -244,7 +191,7 @@ apache:
         - proxy_fcgi
         - rewrite
     vhosts:
-        av_7ig5wv6ryc5l:
+        vhost1:
             servername: mentax.developer
             serveraliases:
                 - www.mentax.developer
@@ -252,7 +199,6 @@ apache:
             port: '80'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
-            custom_fragment: ''
             ssl: '0'
             ssl_cert: LETSENCRYPT
             ssl_key: LETSENCRYPT
@@ -261,7 +207,8 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_fhmn13uz1kfy:
+                php_html:
+                    provider: directory
                     path: /var/www/
                     directoryindex: 'index.php app.php'
                     options:
@@ -272,28 +219,10 @@ apache:
                         - All
                     require:
                         - 'all granted'
-                    custom_fragment: ''
-                    provider: directory
-            files_match:
-                avfm_lcck4netqb9f:
-                    path: (app_dev|config)\.php$
-                    sethandler: 'proxy:fcgi://127.0.0.1:9000'
-                    setenv:
-                        - 'APP_ENV dev'
-                    custom_fragment: ''
+                php_php:
                     provider: filesmatch
-                avfm_kpn3nykxmjzz:
-                    path: app\.php$
-                    sethandler: 'proxy:fcgi://127.0.0.1:9000'
-                    setenv:
-                        - 'APP_ENV prod'
-                    custom_fragment: ''
-                    provider: filesmatch
-                avfm_5whdc11pbm3a:
                     path: \.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
-                    custom_fragment: ''
-                    provider: filesmatch
 letsencrypt:
     install: '1'
     settings:
@@ -315,12 +244,11 @@ php:
             - gd
             - mbstring
             - pgsql
-            - mysql
             - sqlite
             - soap
             - bcmath
             - redis
-            - zip 
+            - zip
         pear: {  }
         pecl: {  }
     ini:
@@ -328,11 +256,10 @@ php:
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
         date.timezone: UTC
-        max_input_vars: '2000'
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_t9o23492rvlu:
+        pool1:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -352,6 +279,7 @@ xdebug:
         xdebug.remote_port: '9000'
         xdebug.profiler_enable: '1'
         xdebug.profiler_enable_trigger: '1'
+        xdebug.remote_host: 192.168.56.1
 blackfire:
     install: '0'
     settings:
@@ -366,31 +294,28 @@ blackfire:
             agent_timeout: '0.25'
             log_file: ''
             log_level: '1'
-xhprof:
-    install: '0'
 wpcli:
     install: '0'
-    version: v0.24.1
 drush:
     install: '0'
     version: 8.0.5
 ruby:
     install: '1'
     versions:
-        rv_ir48mdn0j2gq:
+        ruby1:
             default: '1'
             bundler: '1'
-            version: 2.3.1
+            version: '2.4'
             gems:
-                - deep_merge@1.0.1
-                - activesupport@4.2.6
-                - vine@0.2
+                - deep_merge@1.2.1
+                - activesupport@5.1.4
+                - vine@0.4
 python:
     install: '1'
     packages: {  }
     versions: {  }
 nodejs:
-    install: '1'
+    install: '0'
     settings:
         version: '6'
     npm_packages: {  }
@@ -401,15 +326,16 @@ mariadb:
         root_password: '123'
         override_options: {  }
     users:
-        mariadbnu_lw854dz6ials:
+        user1:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_i2z8ddegmr7u:
+        database1:
             name: dbname
+            collate: utf8_general_ci
             sql: ''
     grants:
-        mariadbng_6jf2yktehoyz:
+        grant1:
             user: dbuser
             table: '*.*'
             privileges:
@@ -421,15 +347,16 @@ mysql:
         root_password: '123'
         override_options: {  }
     users:
-        mysqlnu_9hiq1nj95dpo:
+        user1:
             name: dbuser
             password: '123'
     databases:
-        mysqlnd_79ktd0q2ykv7:
+        database1:
             name: dbname
+            collate: utf8_general_ci
             sql: ''
     grants:
-        mysqlng_4zpyrhvh2ys7:
+        grant1:
             user: dbuser
             table: '*.*'
             privileges:
@@ -442,24 +369,45 @@ postgresql:
             version: '9.6'
         server:
             postgres_password: '123'
-    databases: {  }
-    users: {  }
-    grants: {  }
+    databases:
+        database1:
+            dbname: dbname
+            owner: dbuser
+    users:
+        user1:
+            username: dbuser
+            password: '123'
+            superuser: '1'
+    grants:
+        grant1:
+            role: dbuser
+            db: dbname
+            privilege:
+                - ALL
 mongodb:
     install: '0'
     settings:
         bind_ip: 127.0.0.1
         port: '27017'
     globals:
-        version: 2.6.0
-    databases: {  }
+        version: 3.6.2
+    databases:
+        database1:
+            name: dbname
+            user: dbuser
+            password: '123'
 redis:
-    install: '0'
+    install: '1'
     settings:
         port: '6379'
 sqlite:
     install: '0'
-    databases: {  }
+    databases:
+        database1:
+            name: dbname
+            owner: www-data
+            group: www-data
+            sql_file: ''
 mailhog:
     install: '0'
     settings:
@@ -483,19 +431,24 @@ rabbitmq:
     install: '0'
     settings:
         port: '5672'
-    users: {  }
+    users:
+        user1:
+            admin: '1'
+            name: admin
+            password: '123'
+            tags:
+                - admin
     vhosts: {  }
     plugins: {  }
 elastic_search:
     install: '0'
     settings:
-        version: 2.3.1
+        version: 6.1.2
         java_install: true
     instances:
-        esi_9qmpxex5gkfr:
+        instance1:
             name: es-01
-solr:
-    install: '0'
-    settings:
-        version: 5.5.2
-        port: '8984'
+            jvm_options:
+                - '-Xms2G'
+                - '-Xmx2G'
+
