@@ -224,7 +224,7 @@ apache:
                     path: \.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
 letsencrypt:
-    install: '1'
+    install: '0'
     settings:
         email: ''
         webserver_service: ''
@@ -232,7 +232,7 @@ letsencrypt:
 php:
     install: '1'
     settings:
-        version: '7.1'
+        version: '7.3'
     modules:
         php:
             - cli
@@ -249,6 +249,7 @@ php:
             - bcmath
             - redis
             - zip
+            - pdf_pgsql
         pear: {  }
         pecl: {  }
     ini:
