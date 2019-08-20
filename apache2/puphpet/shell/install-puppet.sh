@@ -22,11 +22,11 @@ if [[ ! -f "${PUPHPET_STATE_DIR}/install-puppet" ]]; then
             ${URL}
         dpkg -i "${PUPHPET_STATE_DIR}/puppet5-release-${CODENAME}.deb"
         apt-get update
-        apt-get -y install puppet-agent=5.3.*
+        apt-get -y install puppet-agent=5.5.*
 
         cat >/etc/apt/preferences.d/puppet-agent << 'EOL'
 Package: puppet-agent
-Pin: version 5.3.*
+Pin: version 5.5.*
 Pin-Priority: 1002
 EOL
     fi
@@ -53,13 +53,14 @@ fi
 GEM_PATH=$(cat "${PUPHPET_STATE_DIR}/gem_path")
 
 if ! (${GEM} list deep_merge | grep -q 'deep_merge'); then
-    ${GEM} install deep_merge -v 1.2.1 --no-ri --no-rdoc
+    ${GEM} install deep_merge  --no-ri --no-rdoc
 fi
 
 if ! (${GEM} list activesupport | grep -q 'activesupport'); then
-    ${GEM} install activesupport -v 5.1.4 --no-ri --no-rdoc
+    ${GEM} install activesupport   --no-ri --no-rdoc
 fi
 
 if ! (${GEM} list vine | grep -q 'vine'); then
-    ${GEM} install vine -v 0.4 --no-ri --no-rdoc
+    ${GEM} install vine   --no-ri --no-rdoc
 fi
+ 

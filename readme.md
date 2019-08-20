@@ -36,3 +36,12 @@ Potem
     vagrant ssh  
 
 i mozesz cieszyć się swoją wirtualką.    
+
+
+PROBLEMY
+------------
+
+1. Failed to open/create the internal network
+
+https://stackoverflow.com/questions/43580778/failed-to-create-the-host-only-adapter-windows-10-docker-virtualbox/48227842#48227842
+https://stackoverflow.com/questions/33725779/failed-to-open-create-the-internal-network-vagrant-on-windows10
