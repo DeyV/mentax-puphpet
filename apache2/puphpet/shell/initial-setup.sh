@@ -39,7 +39,7 @@ if [[ "${OS}" == 'debian' || "${OS}" == 'ubuntu' ]]; then
     apt-get update
 
     apt-get -y install iptables-persistent software-properties-common \
-        python-software-properties curl git-core build-essential
+          curl git-core build-essential
 
     # Fixes https://github.com/mitchellh/vagrant/issues/1673
     # Fixes https://github.com/mitchellh/vagrant/issues/7368

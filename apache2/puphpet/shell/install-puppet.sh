@@ -57,10 +57,10 @@ if ! (${GEM} list deep_merge | grep -q 'deep_merge'); then
 fi
 
 if ! (${GEM} list activesupport | grep -q 'activesupport'); then
-    ${GEM} install activesupport   --no-ri --no-rdoc
+    ${GEM} install activesupport -v 5.2.3  --no-ri --no-rdoc
 fi
 
 if ! (${GEM} list vine | grep -q 'vine'); then
-    ${GEM} install vine   --no-ri --no-rdoc
+    ${GEM} install vine --no-ri --no-rdoc
 fi
  

@@ -174,11 +174,14 @@ apache:
                     path: \.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
 letsencrypt:
-    install: '0'
+    install: '1'
     settings:
-        email: ''
+        email: 'dawid@mentax.pl'
         webserver_service: ''
-    domains: {  }
+    domains:
+        domain_bcp:
+            hosts:
+                - mentax.developer
 php:
     install: '1'
     settings:
